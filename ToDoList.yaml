@@ -1,0 +1,97 @@
+openapi: 3.1.0
+info:
+  version: '1.0'
+  title: ToDoList
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /todo:
+    get:
+      summary: Get tasks
+      operationId: get-todo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoModel'
+        '500':
+          description: Failed to fetch todos/Failed to scan todo/Error after scanning todos
+      servers:
+        - url: 'http://localhost:8080'
+    post:
+      summary: Create a new task
+      operationId: post-todo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoModel'
+      responses:
+        '200':
+          description: Todo created successfully
+        '400':
+          description: Invalid request body/The title field is required
+        '500':
+          description: Failed to save todo
+      servers:
+        - url: 'http://localhost:8080'
+  '/todo/{id}':
+    put:
+      summary: Update task
+      operationId: put-todo-id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Todo updated successfully
+        '400':
+          description: Invalid request body/The id is invalid/The title field is required
+        '500':
+          description: Failed to update todo
+      servers:
+        - url: 'http://localhost:8080'
+    delete:
+      summary: Your DELETE endpoint
+      operationId: delete-todo-id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: The id is invalid
+        '500':
+          description: Failed to delete todo
+      servers:
+        - url: 'http://localhost:8080'
+components:
+  schemas:
+    TodoModel:
+      type: object
+      title: Todo
+      properties:
+        ID:
+          type: integer
+        Title:
+          type: string
+        Completed:
+          type: boolean
+        CreatedAt:
+          type: string
+      examples:
+        - ID: 0
+          Title: string
+          Completed: true
+          CreatedAt: string
